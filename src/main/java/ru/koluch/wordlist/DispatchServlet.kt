@@ -30,7 +30,7 @@ class EditCategoryAction(val id: Long, val title: String?, val parentId: Long?) 
 class DeleteCategoryAction(val id: Long) : Action(ACTION_NEW_CATEGORY)
 
 enum class Currency {USD, EUR, RUR}
-class SetCurrencyAction(val currency: Currency) : Action(ACTION_NEW_CATEGORY)
+class SetCurrencyAction(val currency: Currency) : Action(ACTION_SET_CURRENCY)
 
 class DispatchServlet : Servlet() {
 
@@ -311,6 +311,9 @@ class DispatchServlet : Servlet() {
                 is SetCurrencyAction -> {
                     userEntity.setProperty(USER_PROP_CURRENCY, action.currency.name)
                     datastore.put(userEntity)
+                    return DataResult(
+                        HttpServletResponse.SC_OK
+                    );
                 }
             }
             return ErrorResult(
