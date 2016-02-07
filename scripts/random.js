@@ -56,8 +56,10 @@ var common = require("./_common.js");
 
 var sender = new common.Sender();
 
+var url = "http://192.168.1.185:8081"
+
 function dispatch(json)  {
-    var result = sender.post('http://localhost:8081/dispatch', { json: json})
+    var result = sender.post(url + '/dispatch', { json: json})
     if(result.body) {
         return JSON.parse(result.body)
     }
@@ -71,52 +73,87 @@ function money(rubels) {
     return Math.floor(rubels * 100)
 }
 
-sender.get('http://localhost:8081/clean')
 
-var loginResponse = sender.post('http://localhost:8081/_ah/login?continue=%2Fauth', {form: {
+var loginResponse = sender.post(url +  '/_ah/login?continue=%2Fauth', {form: {
     'email':'test@example.com',
     'continue':'/login',
     'action':'Log In'
 }});
 
+sender.get(url + '/clean')
 
-sender.get('http://localhost:8081/login')
+sender.get(url + '/login')
 
-var initialState = JSON.parse(sender.get('http://localhost:8081/dispatch').body)
+var initialState = JSON.parse(sender.get(url + '/dispatch').body)
 var rootCategoryId = initialState.rootCategoryId
 /*
     Categories:
-        Home
-            Payments
+        Payments
+            Home
                 Rent
-                Internet
+                Gas
+                Electricity
+            Phone
+            Internet
+            Charity
         Food
             Work
             Home
+        Health
+        Transport
+        Self care
+        Presents
+
 */
 
-// Categories
-var homeCategoryId = dispatch({
-    type:"NEW_CATEGORY",
-    title:"Home",
-    parentId: rootCategoryId
-})
+return;
 
+// Categories
 var paymentsCategoryId = dispatch({
     type:"NEW_CATEGORY",
     title:"Payments",
-    parentId:homeCategoryId
+    parentId:rootCategoryId
+})
+
+var homeCategoryId = dispatch({
+    type:"NEW_CATEGORY",
+    title:"Home",
+    parentId:paymentsCategoryId
 })
 
 var rentCategoryId = dispatch({
     type:"NEW_CATEGORY",
     title:"Rent",
+    parentId:homeCategoryId
+})
+
+var gasCategoryId = dispatch({
+    type:"NEW_CATEGORY",
+    title:"Gas",
+    parentId:homeCategoryId
+})
+
+var electricityCategoryId = dispatch({
+    type:"NEW_CATEGORY",
+    title:"Electricity",
+    parentId:homeCategoryId
+})
+
+var phoneCategoryId = dispatch({
+    type:"NEW_CATEGORY",
+    title:"Phone",
     parentId:paymentsCategoryId
 })
 
 var internetCategoryId = dispatch({
     type:"NEW_CATEGORY",
     title:"Internet",
+    parentId:paymentsCategoryId
+})
+
+var charityCategoryId = dispatch({
+    type:"NEW_CATEGORY",
+    title:"Charity",
     parentId:paymentsCategoryId
 })
 
@@ -138,22 +175,28 @@ var atHomeCategoryId = dispatch({
     parentId:foodCategoryId
 })
 
+var healthCategoryId = dispatch({
+    type:"NEW_CATEGORY",
+    title:"Health",
+    parentId: rootCategoryId
+})
+
 var transportCategoryId = dispatch({
     type:"NEW_CATEGORY",
     title:"Transport",
     parentId: rootCategoryId
 })
 
-var familyCategoryId = dispatch({
+var selfCareCategoryId = dispatch({
     type:"NEW_CATEGORY",
-    title:"Family",
+    title:"Self care",
     parentId: rootCategoryId
 })
 
 var presentsCategoryId = dispatch({
     type:"NEW_CATEGORY",
     title:"Presents",
-    parentId:familyCategoryId
+    parentId:rootCategoryId
 })
 
 
