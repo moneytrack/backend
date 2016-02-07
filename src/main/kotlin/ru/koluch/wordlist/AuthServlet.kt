@@ -59,7 +59,9 @@ class AuthServlet : Servlet() {
             "/logout" -> {
                 val userPrincipal = req.userPrincipal
                 if (userPrincipal != null) {
-                    resp.sendRedirect(userService.createLogoutURL("/"))
+                    val redirect: String = req.getParameter("redirect") ?: "/";
+
+                    resp.sendRedirect(userService.createLogoutURL(redirect))
                 } else {
                     resp.sendError(HttpServletResponse.SC_UNAUTHORIZED)
                     resp.writer.println("User is not authorized");
