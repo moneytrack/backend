@@ -73,15 +73,56 @@ class AuthServlet : Servlet() {
         }
     }
 
+    /*
+
+        Create default category list:
+            Payments
+                Home
+                    Rent
+                    Gas
+                    Electricity
+                Phone
+                Internet
+                Charity
+            Food
+                Work
+                Home
+            Health
+            Transport
+            Self care
+            Presents
+
+         //todo: move to config
+     */
     private fun createDefaultCategories(tx: Transaction, ancestor: Key, datastore: DatastoreService): Entity {
 
         val root = createCategory(ancestor, "Root", null, 0)
         val rootId = datastore.put(tx, root).id
 
+        val paymentsId = datastore.put(tx, createCategory(ancestor, "Payments", rootId, 0)).id
+
+        val paymentsHomeId = datastore.put(tx, createCategory(ancestor, "Home", paymentsId, 0)).id
+        datastore.put(tx, createCategory(ancestor, "Rent", paymentsHomeId, 0))
+        datastore.put(tx, createCategory(ancestor, "Gas", paymentsHomeId, 0))
+        datastore.put(tx, createCategory(ancestor, "Electricity", paymentsHomeId, 0))
+
+        datastore.put(tx, createCategory(ancestor, "Phone", paymentsId, 0))
+        datastore.put(tx, createCategory(ancestor, "Internet", paymentsId, 0))
+        datastore.put(tx, createCategory(ancestor, "Food", paymentsId, 0))
+
+
+        val foodId = datastore.put(tx, createCategory(ancestor, "Food", rootId, 0)).id
+        datastore.put(tx, createCategory(ancestor, "Work", foodId, 0))
+        datastore.put(tx, createCategory(ancestor, "Home", foodId, 0))
+
+
+        datastore.put(tx, createCategory(ancestor, "Health", rootId, 0))
         datastore.put(tx, createCategory(ancestor, "Transport", rootId, 0))
-        datastore.put(tx, createCategory(ancestor, "Food", rootId, 0))
         datastore.put(tx, createCategory(ancestor, "Self care", rootId, 0))
-        datastore.put(tx, createCategory(ancestor, "Сlothes", rootId, 0))
+        datastore.put(tx, createCategory(ancestor, "Presents", rootId, 0))
+
+
+
 
         return root;
     }

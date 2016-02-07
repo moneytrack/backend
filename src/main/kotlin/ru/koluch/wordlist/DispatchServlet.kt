@@ -49,8 +49,6 @@ class DispatchServlet : Servlet() {
             return;
         }
 
-//        val tx = datastore.beginTransaction();
-
         datastore.inTransaction(fun(tx) {
             val userEntity: Entity
             try {
