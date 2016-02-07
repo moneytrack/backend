@@ -85,6 +85,7 @@ sender.get(url + '/clean')
 sender.get(url + '/login')
 
 var initialState = JSON.parse(sender.get(url + '/dispatch').body)
+
 var rootCategoryId = initialState.rootCategoryId
 
 // Expenses
@@ -94,10 +95,9 @@ var rootCategoryId = initialState.rootCategoryId
         15:17 - 20000 - Home/Payments/Rent
         20:52 - 1053.56 - Food/Home - Some goods (Okay)
 */
-var DAYS = 1
+var DAYS = 500
 var EXPENSE_PER_DAY = 3;
-var cats = [homeCategoryId, paymentsCategoryId, rentCategoryId, internetCategoryId,
- foodCategoryId, atWorkCategoryId, atHomeCategoryId, transportCategoryId, familyCategoryId, presentsCategoryId]
+var cats = initialState.categoryList.map(x => x.id).filter(x => x !== rootCategoryId)
 
 var words = ("using props passed down from parent to generate state in "
 + "often leads to duplication of source of truth where the real data "
@@ -105,11 +105,16 @@ var words = ("using props passed down from parent to generate state in "
 + "get out of sync later on and cause maintenance trouble").split(/\s+/g)
 
 
-var dev = 0.4;
+var dev = 0.4; // deviation
+
+function randomInt(upper) {
+    return Math.floor(upper * Math.random())
+}
 
 function choose(arr) {
     return arr[parseInt(Math.random() * arr.length)]
 }
+
 
 const makeText = function(len) {
     var result = [];
@@ -125,12 +130,14 @@ function makeNumber(num) {
     return num - (num * dev) + (num * dev * 2 * Math.random())
 }
 
-var time = moment("2015-01-01 09:46");
+var time = moment();
+time.subtract(DAYS, "days")
+
 for(var day = 0; day < DAYS; ++day) {
     for(var expense = 0; expense < makeNumber(EXPENSE_PER_DAY); ++expense) {
 
-        time.add(makeNumber(3), 'hours')
-        time.add(makeNumber(30), 'minutes')
+        time.set('hours', 9 + randomInt(21 - 9))
+        time.set('minutes', randomInt(60))
 
         dispatch({
             type:"NEW_EXPENSE",
@@ -142,5 +149,4 @@ for(var day = 0; day < DAYS; ++day) {
 
     }
     time.add(1, 'days')
-    time.set('hours', 9)
 }
