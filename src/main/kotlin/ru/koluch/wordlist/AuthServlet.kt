@@ -98,28 +98,29 @@ class AuthServlet : Servlet() {
 
         val root = createCategory(ancestor, "Root", null, 0)
         val rootId = datastore.put(tx, root).id
+        var order: Long = 0
 
-        val paymentsId = datastore.put(tx, createCategory(ancestor, "Payments", rootId, 0)).id
+        val paymentsId = datastore.put(tx, createCategory(ancestor, "Payments", rootId, order++)).id
 
-        val paymentsHomeId = datastore.put(tx, createCategory(ancestor, "Home", paymentsId, 0)).id
-        datastore.put(tx, createCategory(ancestor, "Rent", paymentsHomeId, 0))
-        datastore.put(tx, createCategory(ancestor, "Gas", paymentsHomeId, 0))
-        datastore.put(tx, createCategory(ancestor, "Electricity", paymentsHomeId, 0))
+        val paymentsHomeId = datastore.put(tx, createCategory(ancestor, "Home", paymentsId, order++)).id
+        datastore.put(tx, createCategory(ancestor, "Rent", paymentsHomeId, order++))
+        datastore.put(tx, createCategory(ancestor, "Gas", paymentsHomeId, order++))
+        datastore.put(tx, createCategory(ancestor, "Electricity", paymentsHomeId, order++))
 
-        datastore.put(tx, createCategory(ancestor, "Phone", paymentsId, 0))
-        datastore.put(tx, createCategory(ancestor, "Internet", paymentsId, 0))
-        datastore.put(tx, createCategory(ancestor, "Food", paymentsId, 0))
-
-
-        val foodId = datastore.put(tx, createCategory(ancestor, "Food", rootId, 0)).id
-        datastore.put(tx, createCategory(ancestor, "Work", foodId, 0))
-        datastore.put(tx, createCategory(ancestor, "Home", foodId, 0))
+        datastore.put(tx, createCategory(ancestor, "Phone", paymentsId, order++))
+        datastore.put(tx, createCategory(ancestor, "Internet", paymentsId, order++))
+        datastore.put(tx, createCategory(ancestor, "Charity", paymentsId, order++))
 
 
-        datastore.put(tx, createCategory(ancestor, "Health", rootId, 0))
-        datastore.put(tx, createCategory(ancestor, "Transport", rootId, 0))
-        datastore.put(tx, createCategory(ancestor, "Self care", rootId, 0))
-        datastore.put(tx, createCategory(ancestor, "Presents", rootId, 0))
+        val foodId = datastore.put(tx, createCategory(ancestor, "Food", rootId, order++)).id
+        datastore.put(tx, createCategory(ancestor, "Work", foodId, order++))
+        datastore.put(tx, createCategory(ancestor, "Home", foodId, order++))
+
+
+        datastore.put(tx, createCategory(ancestor, "Health", rootId, order++))
+        datastore.put(tx, createCategory(ancestor, "Transport", rootId, order++))
+        datastore.put(tx, createCategory(ancestor, "Self care", rootId, order++))
+        datastore.put(tx, createCategory(ancestor, "Presents", rootId, order++))
 
 
 
