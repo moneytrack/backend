@@ -11,6 +11,7 @@ const val ACTION_NEW_CATEGORY = "NEW_CATEGORY"
 const val ACTION_DELETE_CATEGORY = "DELETE_CATEGORY"
 const val ACTION_EDIT_CATEGORY = "EDIT_CATEGORY"
 const val ACTION_SET_CURRENCY = "SET_CURRENCY"
+const val ACTION_SET_FIRST_DAY_OF_WEEK = "SET_FIRST_DAY_OF_WEEK"
 
 
 const val STATE_HISTORY = "history"
@@ -30,6 +31,7 @@ const val USER_KIND = "User";
 const val USER_PROP_NAME = "name"
 const val USER_PROP_ROOT_CATEGORY_ID = "rootCategoryId";
 const val USER_PROP_CURRENCY = "currency";
+const val USER_PROP_FIRST_DAY_OF_WEEK = "firstDayOfWeek";
 
 
 /*

@@ -45,6 +45,7 @@ class AuthServlet : Servlet() {
 
                             newUserEntity.setProperty(USER_PROP_ROOT_CATEGORY_ID, rootId)
                             newUserEntity.setProperty(USER_PROP_CURRENCY, "USD")
+                            newUserEntity.setProperty(USER_PROP_FIRST_DAY_OF_WEEK, "SUNDAY")
                             datastore.put(tx, newUserEntity)
                         }
                     }

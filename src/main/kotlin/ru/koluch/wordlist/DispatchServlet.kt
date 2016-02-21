@@ -32,6 +32,9 @@ class DeleteCategoryAction(val id: Long) : Action(ACTION_NEW_CATEGORY)
 enum class Currency {USD, EUR, RUR}
 class SetCurrencyAction(val currency: Currency) : Action(ACTION_SET_CURRENCY)
 
+enum class DayOfWeek {MONDAY, SUNDAY}
+class SetFirstDayOfWeekAction(val firstDayOfWeek: DayOfWeek) : Action(ACTION_SET_FIRST_DAY_OF_WEEK)
+
 class DispatchServlet : Servlet() {
 
     val gson = GsonBuilder().serializeNulls().create()
@@ -115,7 +118,8 @@ class DispatchServlet : Servlet() {
                     STATE_ROOT_CATEGORY_ID to userEntity.getProperty(USER_PROP_ROOT_CATEGORY_ID) as Long,
                     STATE_CATEGORY_LIST to collectCategories(),
                     STATE_USER_SETTINGS to jsonObject(
-                        USER_PROP_CURRENCY to userEntity.getProperty(USER_PROP_CURRENCY)
+                        USER_PROP_CURRENCY to userEntity.getProperty(USER_PROP_CURRENCY),
+                        USER_PROP_FIRST_DAY_OF_WEEK to userEntity.getProperty(USER_PROP_FIRST_DAY_OF_WEEK)
                     )
                 )
 
@@ -313,6 +317,14 @@ class DispatchServlet : Servlet() {
                         HttpServletResponse.SC_OK
                     );
                 }
+
+                is SetFirstDayOfWeekAction -> {
+                    userEntity.setProperty(USER_PROP_FIRST_DAY_OF_WEEK, action.firstDayOfWeek.name)
+                    datastore.put(userEntity)
+                    return DataResult(
+                        HttpServletResponse.SC_OK
+                    );
+                }
             }
             return ErrorResult(
                 HttpServletResponse.SC_BAD_REQUEST,
@@ -385,6 +397,13 @@ class DispatchServlet : Servlet() {
                 val currency = Currency.valueOf(currencyString)
                 return SetCurrencyAction(currency)
             }
+
+            else if (type == ACTION_SET_FIRST_DAY_OF_WEEK) {
+                val firstDayOfWeekString = actionJson.get(USER_PROP_FIRST_DAY_OF_WEEK).string
+                val firstDayOfWeek = DayOfWeek.valueOf(firstDayOfWeekString)
+                return SetFirstDayOfWeekAction(firstDayOfWeek)
+            }
+
             throw ActionParseException("Unknown action type: " + type)
         } catch(e: Exception) {
             throw ActionParseException(e)
