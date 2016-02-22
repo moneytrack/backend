@@ -9,10 +9,10 @@
     <artifactId>backend</artifactId>
 
     <properties>
-        <kotlin.version>1.0.0-beta-4584</kotlin.version>
+        <kotlin.version>1.0.0</kotlin.version>
         <app.id>ru-koluch-moneytrack-backend</app.id>
         <app.version>1</app.version>
-        <appengine.version>1.9.31</appengine.version>
+        <appengine.version>1.9.32</appengine.version>
         <gcloud.plugin.version>2.0.9.74.v20150814</gcloud.plugin.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.showDeprecation>true</maven.compiler.showDeprecation>
@@ -43,7 +43,7 @@
         <dependency>
             <groupId>com.github.salomonbrys.kotson</groupId>
             <artifactId>kotson</artifactId>
-            <version>1.7.0</version>
+            <version>2.1.0</version>
         </dependency>
         <dependency>
             <groupId>com.google.code.gson</groupId>
@@ -123,7 +123,7 @@
                     <enableJarClasses>false</enableJarClasses>
                     <version>${app.version}</version>
                     <!-- Comment in the below snippet to bind to all IPs instead of just localhost -->
-                    <!-- address>0.0.0.0</address>-->
+                    <address>192.168.1.185</address>
                     <port>8081</port>
                     <!-- Comment in the below snippet to enable local debugging with a remote debugger
                          like those included with Eclipse or IntelliJ -->
@@ -153,7 +153,7 @@
                         </goals>
                         <configuration>
                             <sourceDirs>
-                                <source>src/main/java</source>
+                                <source>src/main/kotlin</source>
                             </sourceDirs>
                         </configuration>
                     </execution>
