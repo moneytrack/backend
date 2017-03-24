@@ -69,7 +69,11 @@ open class Servlet : HttpServlet() {
 
         if(SystemProperty.environment.value() == SystemProperty.Environment.Value.Production) {
             val referer = req.getHeader("Referer")
-            if (referer == null || !referer.startsWith(env.getProperty("allowOrigin"))) {
+            if (referer == null) {
+                throw RuntimeException("Bad referer")
+            }
+            else if (!(referer.startsWith(env.getProperty("allowOrigin"))
+                        || referer.startsWith("https://www.google.com/"))) {
                 throw RuntimeException("Bad referer")
             }
         }
